@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Geodesy Engine — A Mathematical Earth</title>
+<link rel="stylesheet" href="Earth.css">
+
+</head>
+<body>
+
+<div id="scene-container"></div>
+
+<div id="controls" class="panel">
+  <div class="eyebrow">Geodesy Engine</div>
+  <h1>A Mathematical Earth</h1>
+  <p class="subtitle">Live 3D realization of the reference-ellipsoid, potential-field, and rotational equations. Drag to orbit · scroll to zoom.</p>
+
+  <div class="section-label">Figure of the Earth</div>
+  <div class="btn-group" id="shapeMode">
+    <button class="chip active" data-mode="sphere">Sphere</button>
+    <button class="chip" data-mode="ellipsoid">Ellipsoid</button>
+  </div>
+  <div class="row" style="margin-top:10px;">
+    <label>Flattening exaggeration</label><span class="val" id="flatExaggVal">40×</span>
+  </div>
+  <input type="range" id="flatExagg" min="1" max="150" value="40" step="1">
+  <div class="note" id="flatNote">f = (a−b)/a = 1/298.257 &nbsp;→&nbsp; true flattening is imperceptible at this scale; slider magnifies it for visibility.</div>
+
+  <div class="section-label">Geopotential / Geoid</div>
+  <div class="toggle-row">
+    <label>Show geoid undulation N(φ,λ)</label>
+    <label class="switch"><input type="checkbox" id="geoidToggle"><span class="slider-toggle"></span></label>
+  </div>
+  <div class="row"><label>Undulation exaggeration</label><span class="val" id="geoidExaggVal">2500×</span></div>
+  <input type="range" id="geoidExagg" min="200" max="8000" value="2500" step="100">
+  <div class="note">Simplified long-wavelength model using J₃, J₄ zonal + C₂₂, S₂₂ tesseral terms (illustrative, not full EGM2008).</div>
+
+  <div class="toggle-row" style="margin-top:10px;">
+    <label>Shade surface by normal gravity γ(φ)</label>
+    <label class="switch"><input type="checkbox" id="gravShadeToggle" checked><span class="slider-toggle"></span></label>
+  </div>
+  <div class="toggle-row">
+    <label>Show latitude / longitude grid</label>
+    <label class="switch"><input type="checkbox" id="gridToggle" checked><span class="slider-toggle"></span></label>
+  </div>
+
+  <div class="section-label">Rotation Ω</div>
+  <div class="toggle-row">
+    <label>Animate rotation</label>
+    <label class="switch"><input type="checkbox" id="spinToggle" checked><span class="slider-toggle"></span></label>
+  </div>
+  <div class="row"><label>Angular rate (visual)</label><span class="val" id="spinVal">1.0×</span></div>
+  <input type="range" id="spinRate" min="0" max="5" value="1" step="0.1">
+
+  <div class="section-label">Field Sample Point</div>
+  <div class="row"><label>Geodetic latitude φ</label><span class="val" id="latVal">45.0°</span></div>
+  <input type="range" id="latSlider" min="-90" max="90" value="45" step="0.5">
+  <div class="row"><label>Longitude λ</label><span class="val" id="lonVal">0.0°</span></div>
+  <input type="range" id="lonSlider" min="-180" max="180" value="20" step="0.5">
+  <div class="toggle-row">
+    <label>Show g_grav / a_cent / g_eff vectors</label>
+    <label class="switch"><input type="checkbox" id="vecToggle" checked><span class="slider-toggle"></span></label>
+  </div>
+  <div class="note">Centrifugal vector and deflection-of-the-vertical angle are magnified for visibility (true magnitudes are noted in the readout panel).</div>
+</div>
+
+<div id="readout" class="panel">
+  <h2>Live Readout — Sample Point</h2>
+
+  <div class="stat-row"><span class="k">Geodetic lat. φ</span><span class="v" id="r-phi">45.00°</span></div>
+  <div class="stat-row"><span class="k">Geocentric lat. ψ</span><span class="v" id="r-psi">44.91°</span></div>
+  <div class="formula-hint">tan ψ = (1−e²) tan φ</div>
+
+  <div class="stat-row"><span class="k">Deflection φ−ψ</span><span class="v accent" id="r-defl">0.096° (5.8′)</span></div>
+
+  <div class="divider"></div>
+
+  <div class="stat-row"><span class="k">Prime-vertical N(φ)</span><span class="v" id="r-N">6388.0 km</span></div>
+  <div class="formula-hint">N(φ) = a / √(1 − e² sin²φ)</div>
+
+  <div class="stat-row"><span class="k">Normal gravity γ(φ)</span><span class="v" id="r-gamma">9.8063 m/s²</span></div>
+  <div class="formula-hint">Somigliana's equation, GRS80</div>
+
+  <div class="stat-row"><span class="k">Centrifugal a_cent</span><span class="v" id="r-acent">0.0240 m/s²</span></div>
+  <div class="formula-hint">a_cent = ω²·r·cos φ</div>
+
+  <div class="divider"></div>
+
+  <div class="stat-row"><span class="k">Geoid undulation N</span><span class="v" id="r-geoid">— m</span></div>
+  <div class="stat-row"><span class="k">Curvature radius (visual)</span><span class="v" id="r-vismode">true</span></div>
+</div>
+
+<div id="legend" class="panel">
+  <div class="legend-title">Normal Gravity γ(φ)</div>
+  <div class="gradient-bar"></div>
+  <div class="gradient-labels">
+    <span>9.780 (eq.)</span><span>9.832 (pole)</span>
+  </div>
+</div>
+
+<div id="hint">drag = orbit &nbsp;·&nbsp; scroll = zoom<br>amber marker = field sample point</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="Earth.js"></script>
+</body>
+</html>
