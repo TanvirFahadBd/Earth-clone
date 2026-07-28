@@ -2,7 +2,7 @@
 
 An interactive, first-principles 3D model of planet Earth, built directly from the equations of **geodesy, potential theory, and rotational dynamics** — not from a texture-mapped sphere. Every visual element on screen is driven by a real formula: the ellipsoid shape, the surface coloring, the geoid bumps, and the force vectors at any point you select.
 
-**[▶ Live Demo](#)** &nbsp;·&nbsp; **[📄 Full Mathematical Derivation](#)** &nbsp;·&nbsp; https://earth-clone-luuz.vercel.app/
+**[▶ Live Demo](#) &nbsp;·&nbsp; https://earth-clone-luuz.vercel.app/
 
 ---
 
